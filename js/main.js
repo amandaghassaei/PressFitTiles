@@ -3,7 +3,7 @@ var tileSpace = tileSpace || {};
 
 $(document).ready(function(){
 
-    tileSpace.tileWidth = 36;
+    tileSpace.tileWidth2D = 150;
 
     //init stuff - this should only run once
     var scene = new THREE.Scene();
@@ -32,15 +32,23 @@ $(document).ready(function(){
     render();
 
 
+    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 500);//main canvas
 
+    tileSpace.tiles = [];
+    for (var i=0;i<2;i++){
+        for (var j=0;j<2;j++){
+            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+45), j*(tileSpace.tileWidth2D+45), [false, false], [false, true]))
+        }
+    }
 
-
-//    tileSpace.mainCanvas = Raphael(document.getElementById("svgContainer"), 900, 500);//main canvas
-//
-//    tileSpace.tiles = [];
-//    for (var i=0;i<12;i++){
-//        for (var j=0;j<12;j++){
-//            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth+5), j*(tileSpace.tileWidth+5), [true, false], [false, true]))
-//        }
-//    }
+    tileSpace.downloadSVG = function(){
+        //72 px per inch
+        var svg = tileSpace.mainCanvas.toSVG();
+        var link = document.createElement('a');
+        link.download = 'PressFitConstruction.svg';
+        link.type = 'image/svg+xml';
+        blob = new Blob([svg], {"type": "image/svg+xml"});
+        link.href = (window.URL || webkitURL).createObjectURL(blob);
+        link.click();
+    };
 });

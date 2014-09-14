@@ -12,8 +12,11 @@
     display: inline-block;
 }
 
-#svgContainer{
+#2dDesigner{
     display: inline-block;
+}
+#svgExporter{
+    display: none;
 }
 
 canvas {

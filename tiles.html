@@ -1,10 +1,12 @@
 <html>
 <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <title>Self Assembling Tiles</title>
     <link rel="stylesheet" type="text/css" href="css/tiles.css">
     <link rel="stylesheet" type="text/css" href="dependencies/jquery-ui.min.css">
     <script type="text/javascript" src="dependencies/three.min.js"></script>
     <script type="text/javascript" src="dependencies/raphael-min.js"></script>
+    <script type="text/javascript" src="dependencies/raphael.export.js"></script>
     <script type="text/javascript" src="dependencies/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="dependencies/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/tile.js"></script>
@@ -14,7 +16,8 @@
 
 <body>
 <div id="mainWrapper">
-    <div id="svgContainer"></div>
+    <div id="2dDesigner"></div>
+    <div id="svgExporter"></div>
     <canvas></canvas>
     <div id="uiControls">
     </div>

@@ -1,9 +1,10 @@
 
 var tileSpace = tileSpace || {};
 
-function Tile(xPos, yPos, states){
+function Tile(xPos, yPos, inputs, outputs){
     this.position = [xPos, yPos];
-    this.states = states;
+    this.inputs = inputs;
+    this.outputs = outputs;
     this.color = "#00f";
 
     this.render();
@@ -20,7 +21,10 @@ Tile.prototype.render = function(){
     //states
     this.stateIndicators = [];
     for (var i=0;i<4;i++){
-        this.stateIndicators.push(this.addIndicator(this.states[i], i));
+        var state;
+        if (i<2) state = this.inputs[i];
+        else state = this.outputs[3-i];
+        this.stateIndicators.push(this.addIndicator(state, i));
     }
 
     //bind events to rect
@@ -30,8 +34,8 @@ Tile.prototype.render = function(){
 
 Tile.prototype.addIndicator = function(state, num){
     var color = "#000";
-    if (this.states[num]) color = "#fff";
-    var space = 4
+    if (state) color = "#fff";
+    var space = 4;
     var indicator;
     switch (num){
         case 0:

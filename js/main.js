@@ -32,41 +32,36 @@ $(document).ready(function(){
     render();
 
 
-    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 350);//main canvas
+    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 370);//interactive 2d designer
+    tileSpace.tiles = draw2DTiles();
 
-    var spacing = 32;
-    tileSpace.tiles = [];
-    for (var i=0;i<2;i++){
-        var input1 = false;
-        if (i>0) input1 = true;
-        for (var j=0;j<2;j++){
-            var input2 = false;
-            if (j>0) input2 = true;
-            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [input1, input2], [input1^input2, input1&input2]));
+    function draw2DTiles(){
+        var spacing = 32;
+        var tiles = [];
+        for (var i=0;i<2;i++){
+            var input1 = false;
+            if (i>0) input1 = true;
+            for (var j=0;j<2;j++){
+                var input2 = false;
+                if (j>0) input2 = true;
+                tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [input1, input2], [input1^input2, input1&input2]));
+            }
         }
+        for (i=0;i<2;i++){
+            input1 = false;
+            if (i>0) input1 = true;
+            for (j=0;j<1;j++){
+                tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+43*tileSpace.tileWidth2D/20, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
+            }
+            for (j=1;j<2;j++){
+                tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing)+3*tileSpace.tileWidth2D/10, [input1], [input1^1, input1&1], false))
+            }
+        }
+        tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*6, 13*tileSpace.tileWidth2D/10+spacing, [true, true]));
+        tileSpace.mainCanvas.text(165, tileSpace.tileWidth2D*2+spacing+20, "regular tiles have 2 inputs").attr({"font-size":15});
+        tileSpace.mainCanvas.text(560, tileSpace.tileWidth2D*2+spacing+20, "edge tiles have 1 input").attr({"font-size":15});
+        tileSpace.mainCanvas.text(845, tileSpace.tileWidth2D+spacing+20, "corner tiles\nhave 0 inputs").attr({"font-size":15});
+        return tiles;
     }
-
-    for (i=0;i<2;i++){
-        input1 = false;
-        if (i>0) input1 = true;
-        for (j=0;j<1;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+43*tileSpace.tileWidth2D/20, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
-        }
-        for (j=1;j<2;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing)+3*tileSpace.tileWidth2D/10, [input1], [input1^1, input1&1], false))
-        }
-    }
-
-    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*6, 13*tileSpace.tileWidth2D/10+spacing, [true, true]));
-
-    tileSpace.downloadSVG = function(){
-        //72 px per inch
-        var svg = tileSpace.mainCanvas.toSVG();
-        var link = document.createElement('a');
-        link.download = 'PressFitConstruction.svg';
-        link.type = 'image/svg+xml';
-        blob = new Blob([svg], {"type": "image/svg+xml"});
-        link.href = (window.URL || webkitURL).createObjectURL(blob);
-        link.click();
-    };
 });
+

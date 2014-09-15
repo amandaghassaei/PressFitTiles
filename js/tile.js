@@ -81,6 +81,9 @@ Tile.prototype.addInputsOutputs = function(state, num){
         indicator.click(function(){
             self.changeOutputState(indicator, indicatorText, num);
         });
+        indicatorText.click(function(){
+            self.changeOutputState(indicator, indicatorText, num);
+        });
     } else {//add highlight stroke around inputs
         var highlight = this.drawTriangle([this.position[0]+spacer, this.position[1]],
         [this.position[0]+tileSpace.tileWidth2D/2 ,this.position[1]+tileSpace.tileWidth2D/5],
@@ -118,3 +121,4 @@ Tile.prototype.drawTriangle = function(vert1, vert2, vert3, shouldClose) {
     if (shouldClose) return tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1] + ' L ' + vert3[0] + ' ' + vert3[1] + ' Z');
     return tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1] + ' L ' + vert3[0] + ' ' + vert3[1])
 };
+

@@ -40,17 +40,14 @@ $(document).ready(function(){
         var spacing = 32;
         var tiles = [];
         for (var i=0;i<2;i++){
-            var input1 = false;
-            if (i>0) input1 = true;
+            var input1 = (i>0);
             for (var j=0;j<2;j++){
-                var input2 = false;
-                if (j>0) input2 = true;
+                var input2 = (j>0);
                 tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [input1, input2], [input1^input2, input1&input2]));
             }
         }
         for (i=0;i<2;i++){
-            input1 = false;
-            if (i>0) input1 = true;
+            input1 = i>0;
             for (j=0;j<1;j++){
                 tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+43*tileSpace.tileWidth2D/20, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
             }

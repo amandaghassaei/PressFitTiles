@@ -3,12 +3,33 @@ var tileSpace = tileSpace || {};
 
 $(document).ready(function(){
 
-    var exporter = Raphael(document.getElementById("svgExporter"), 900, 420);//exporter (set to display:none)
+    var exporter = Raphael(document.getElementById("svgExporter"), 900, 380);//exporter (set to display:none)
 
     //laser/material settings (in inches)
     var chamferLength = 0.1;
     var notchWidth = 0.15;
-    var tileWidth = 7.0;
+    var tileWidth = 3.0;
+
+
+    var notchWidthInput = $("#notchWidth");
+    notchWidthInput.keyup(function(e){
+        var val = parseFloat($(this).val());
+        if (val){
+            notchWidth = val;
+            tileSpace.renderParts();
+        }
+    });
+    notchWidthInput.val(notchWidth);
+
+    var tileWidthInput = $("#tileWidth");
+    tileWidthInput.keyup(function(e){
+        var val = parseFloat($(this).val());
+        if (val){
+            tileWidth = val;
+            tileSpace.renderParts();
+        }
+    });
+    tileWidthInput.val(tileWidth);
 
     $("#exportSvg").click(function(){
         tileSpace.renderParts();
@@ -18,11 +39,11 @@ $(document).ready(function(){
     tileSpace.renderParts = function(){
         exporter.clear();
         //draw things to invisible paper
-        var scalingFactor = 72;
+        var scalingFactor = 72.0;
         if (tileWidth*scalingFactor > 185) scalingFactor = 185/tileWidth;
         tileSpace.tiles[0].drawToExporter(exporter, [0, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[1].drawToExporter(exporter, [tileWidth+0.1, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[2].drawToExporter(exporter, [0, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles[1].drawToExporter(exporter, [0, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles[2].drawToExporter(exporter, [tileWidth+0.1, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
         tileSpace.tiles[3].drawToExporter(exporter, [tileWidth+0.1, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
         tileSpace.tiles[4].drawToExporter(exporter, [2*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
         tileSpace.tiles[5].drawToExporter(exporter, [2*(tileWidth+0.1), tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);

@@ -5,8 +5,7 @@ function Tile(xPos, yPos, inputs, outputs){
     this.position = [xPos, yPos];
     this.inputs = inputs;
     this.outputs = outputs;
-    this.color = true;
-    if (outputs && outputs[0]) this.color = false;//default
+    this.color = !(outputs && outputs[0]);//default is lsb state
 
     if (xPos != null) this.render2D();
 }
@@ -19,6 +18,7 @@ Tile.prototype.changeOutputState = function(indicator, indicatorText, num){
     var currentState = this.outputs[num];
     this.setIndicatorColor(!currentState, indicator, indicatorText);
     this.outputs[num] = !currentState;
+    tileSpace.renderParts();
 };
 
 Tile.prototype.changeTileColor = function(rect){
@@ -55,7 +55,7 @@ Tile.prototype.commonRender2D = function(rect){
 
     //add arrow
     this.addArrow([this.position[0]+3*tileSpace.tileWidth2D/5, this.position[1]+3*tileSpace.tileWidth2D/5],
-        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3]);
+        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3], tileSpace.mainCanvas);
 
     //add event handler for tile color change
     var self = this;
@@ -71,10 +71,11 @@ Tile.prototype.render2D = function(){
     this.commonRender2D(rect);
 };
 
-Tile.prototype.addArrow = function(vert1, vert2){
-    tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1]).attr({"stroke-width": 2});
-    tileSpace.mainCanvas.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + vert2[0] + ' ' + (vert2[1]+15)).attr({"stroke-width": 2});
-    tileSpace.mainCanvas.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + (vert2[0]+15) + ' ' + vert2[1]).attr({"stroke-width": 2});
+Tile.prototype.addArrow = function(vert1, vert2, paper, color){
+    if (!color) color = "black";
+    paper.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1]).attr({"stroke-width": 2, "stroke": color});
+    paper.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + vert2[0] + ' ' + (vert2[1]+15)).attr({"stroke-width": 2, "stroke": color});
+    paper.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + (vert2[0]+15) + ' ' + vert2[1]).attr({"stroke-width": 2, "stroke": color});
 };
 
 Tile.prototype.addInputsOutputs = function(state, num){
@@ -147,6 +148,7 @@ Tile.prototype.drawToExporter = function(exporter, offset, notchWidth, chamferLe
         var notch = this.drawSide(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state,  i);
         notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor);
     }
+    this.addArrow([offset[0]*scalingFactor + 3*scalingFactor*tileWidth/5, offset[1]*scalingFactor + 3*scalingFactor*tileWidth/5],[offset[0]*scalingFactor + scalingFactor*tileWidth/3, offset[1]*scalingFactor + scalingFactor*tileWidth/3], exporter, "red");
 };
 
 Tile.prototype.drawSide = function(width, exporter, notchWidth, chamferLength, state){//override this

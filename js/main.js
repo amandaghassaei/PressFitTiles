@@ -5,39 +5,29 @@ $(document).ready(function(){
 
     tileSpace.tileWidth2D = 150;
 
-    //init stuff - this should only run once
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, 900/700.0, 0.1, 1000);
-
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(900, 700);
-    $("#3dRenderer").append(renderer.domElement);
-//    document.body.appendChild();
-
-    var geometry = new THREE.BoxGeometry(1,1,1);
-    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    camera.position.z = 5;
-
-    var render = function () {
-        requestAnimationFrame(render);
-
-        cube.rotation.x += 0.1;
-        cube.rotation.y += 0.1;
-
-        renderer.render(scene, camera);
+    tileSpace.render3d = function(){
+        requestAnimationFrame(tileSpace.render3d);
+        tileSpace.renderer.render(tileSpace.scene, tileSpace.camera);
     };
 
-    render();
+    var init3dStuff = function(width, height){
+        tileSpace.scene = new THREE.Scene();
+        tileSpace.camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);
 
+        tileSpace.renderer = new THREE.WebGLRenderer();
+        tileSpace.renderer.setSize(width, height);
+        $("#3dRenderer").append(tileSpace.renderer.domElement);
 
-    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 370);//interactive 2d designer
-    tileSpace.tiles = draw2DTiles();
-    tileSpace.renderParts();
+        var geometry = new THREE.BoxGeometry(1,1,1);
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        var cube = new THREE.Mesh(geometry, material);
+        tileSpace.scene.add(cube);
 
-    function draw2DTiles(){
+        tileSpace.camera.position.z = 5;
+        tileSpace.render3d();
+    };
+
+    var draw2DTiles = function(){
         var spacing = 32;
         var tiles = [];
         for (var i=0;i<2;i++){
@@ -61,6 +51,13 @@ $(document).ready(function(){
         tileSpace.mainCanvas.text(560, tileSpace.tileWidth2D*2+spacing+20, "edge tiles have 1 input").attr({"font-size":15});
         tileSpace.mainCanvas.text(845, tileSpace.tileWidth2D+spacing+20, "corner tiles\nhave 0 inputs").attr({"font-size":15});
         return tiles;
-    }
+    };
+
+    //init stuff - this should only run once
+    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 370);//interactive 2d designer
+    tileSpace.tiles = draw2DTiles();
+    tileSpace.renderParts();
+    init3dStuff(900.0, 700.0);
+
 });
 

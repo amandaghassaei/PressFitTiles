@@ -14,7 +14,6 @@
     <script type="text/javascript" src="js/cornerTile.js"></script>
     <script type="text/javascript" src="js/svgExporter.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/uiControls.js"></script>
 </head>
 
 <body>
@@ -24,13 +23,14 @@
     <div id="svgExporter"></div>
     <div id="uiControls">
         <div class="uiControlsSub">
+            (all units in inches)<br/><br/>
             Notch Width: <input id="notchWidth" type="text"><br/>
             Tile Width: <input id="tileWidth" type="text"><br/>
         </div>
         <div class="uiControlsSub">
             <div>Chamfer:</div>
             <div id="chamfer" class="slider"></div>
-            <div>Extra:</div>
+            <div>Extra Edge Dimensions:</div>
             <div id="extraEdge" class="slider"></div>
         </div>
         <button id="exportSvg">Download Files</button>

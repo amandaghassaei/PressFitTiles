@@ -85,4 +85,30 @@ $(document).ready(function(){
         link.click();
     };
 
+    var draw2DTiles = function(){
+        var spacing = 32;
+        var tiles = [];
+        for (var i=0;i<2;i++){
+            var input1 = (i>0);
+            for (var j=0;j<2;j++){
+                var input2 = (j>0);
+                tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [input1, input2], [input1^input2, input1&input2]));
+            }
+        }
+        for (i=0;i<2;i++){
+            input1 = i>0;
+            for (j=0;j<1;j++){
+                tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+43*tileSpace.tileWidth2D/20, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
+            }
+            for (j=1;j<2;j++){
+                tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing)+3*tileSpace.tileWidth2D/10, [input1], [input1^1, input1&1], false))
+            }
+        }
+        tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*6, 13*tileSpace.tileWidth2D/10+spacing, [true, true]));
+        tileSpace.mainCanvas.text(165, tileSpace.tileWidth2D*2+spacing+20, "regular tiles have 2 inputs").attr({"font-size":15});
+        tileSpace.mainCanvas.text(560, tileSpace.tileWidth2D*2+spacing+20, "edge tiles have 1 input").attr({"font-size":15});
+        tileSpace.mainCanvas.text(845, tileSpace.tileWidth2D+spacing+20, "corner tiles\nhave 0 inputs").attr({"font-size":15});
+        return tiles;
+    };
+
 });

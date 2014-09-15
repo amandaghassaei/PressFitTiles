@@ -34,7 +34,7 @@ $(document).ready(function(){
 
     tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 500);//main canvas
 
-    var spacing = 45;
+    var spacing = 35;
     tileSpace.tiles = [];
     for (var i=0;i<2;i++){
         for (var j=0;j<2;j++){
@@ -50,6 +50,8 @@ $(document).ready(function(){
             tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [true], [false, false], false))
         }
     }
+
+    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*5, 0, [false, true]));
 
     tileSpace.downloadSVG = function(){
         //72 px per inch

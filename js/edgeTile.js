@@ -22,10 +22,6 @@ EdgeTile.prototype.render2D = function(){
         rect = tileSpace.mainCanvas.rect(this.position[0], this.position[1], tileSpace.tileWidth2D, tileSpace.tileWidth2D-3*tileSpace.tileWidth2D/10);
     }
     this.commonRender2D(rect);
-
-    //add arrow
-    this.addArrow([this.position[0]+2*tileSpace.tileWidth2D/3, this.position[1]+2*tileSpace.tileWidth2D/3],
-        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3]);
 };
 
 

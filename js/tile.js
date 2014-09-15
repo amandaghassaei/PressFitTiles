@@ -32,6 +32,10 @@ Tile.prototype.commonRender2D = function(rect){
         this.addInputsOutputs(state, i);
     }
 
+    //add arrow
+    this.addArrow([this.position[0]+3*tileSpace.tileWidth2D/5, this.position[1]+3*tileSpace.tileWidth2D/5],
+        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3]);
+
     //add event handler for tile color change
     var self = this;
     rect.click(function(){
@@ -45,10 +49,6 @@ Tile.prototype.commonRender2D = function(rect){
 Tile.prototype.render2D = function(){
     var rect = tileSpace.mainCanvas.rect(this.position[0], this.position[1], tileSpace.tileWidth2D, tileSpace.tileWidth2D);
     this.commonRender2D(rect);
-
-    //add arrow
-    this.addArrow([this.position[0]+2*tileSpace.tileWidth2D/3, this.position[1]+2*tileSpace.tileWidth2D/3],
-        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3]);
 };
 
 Tile.prototype.addArrow = function(vert1, vert2){

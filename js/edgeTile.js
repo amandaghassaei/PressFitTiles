@@ -7,10 +7,12 @@ function EdgeTile(xPos, yPos, inputs, outputs, isVert){
 
     this.isVert = isVert;
     if (isVert){
-        Tile.apply(this, [xPos, yPos, [inputs[0], false], outputs]);
+        inputs.push(false);
+        Tile.apply(this, [xPos, yPos, inputs, outputs]);
         return;
     }
-    Tile.apply(this, [xPos, yPos, [false, inputs[0]], outputs]);
+    inputs.unshift(false);
+    Tile.apply(this, [xPos, yPos, inputs, outputs]);
 }
 EdgeTile.prototype = new Tile();//subclass of Tile
 

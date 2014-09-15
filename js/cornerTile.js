@@ -2,7 +2,6 @@
 var tileSpace = tileSpace || {};
 
 function CornerTile(xPos, yPos, outputs){//corner tile has no inputs
-    console.log("here");
     Tile.apply(this, [xPos, yPos, [false, false], outputs]);
 }
 CornerTile.prototype = new Tile();//subclass of Tile

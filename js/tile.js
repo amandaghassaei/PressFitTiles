@@ -143,7 +143,7 @@ Tile.prototype.drawToExporter = function(exporter, offset, notchWidth, chamferLe
     for (var i=0;i<4;i++){
         var state;
         if (i<2) state = this.outputs[i];
-        else state = !this.inputs[3-i];
+        else state = !this.inputs[i-2];
         var notch = this.drawSide(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state,  i);
         notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor);
     }

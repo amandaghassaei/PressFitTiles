@@ -8,7 +8,7 @@ $(document).ready(function(){
     //laser/material settings (in inches)
     var chamferLength = 0.1;
     var notchWidth = 0.15;
-    var tileWidth = 4.0;
+    var tileWidth = 7.0;
 
     $("#exportSvg").click(function(){
         tileSpace.renderParts();

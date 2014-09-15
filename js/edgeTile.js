@@ -7,7 +7,7 @@ function EdgeTile(xPos, yPos, inputs, outputs, isVert){
 
     this.isVert = isVert;
     if (isVert){
-        Tile.apply(this, [xPos, yPos, [true, inputs[0]], outputs]);
+        Tile.apply(this, [xPos, yPos, [inputs[0], false], outputs]);
         return;
     }
     Tile.apply(this, [xPos, yPos, [false, inputs[0]], outputs]);

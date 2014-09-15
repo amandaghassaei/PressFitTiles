@@ -37,21 +37,27 @@ $(document).ready(function(){
     var spacing = 35;
     tileSpace.tiles = [];
     for (var i=0;i<2;i++){
+        var input1 = false;
+        if (i>0) input1 = true;
         for (var j=0;j<2;j++){
-            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [true, false], [false, false]))
+            var input2 = false;
+            if (j>0) input2 = true;
+            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [input1, input2], [input1^input2, input1&input2]));
         }
     }
 
     for (i=0;i<2;i++){
+        input1 = false;
+        if (i>0) input1 = true;
         for (j=0;j<1;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [true], [false, false], true))
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
         }
         for (j=1;j<2;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [true], [false, false], false))
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], false))
         }
     }
 
-    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*5, 0, [false, true]));
+    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*5, 0, [true, true]));
 
     tileSpace.downloadSVG = function(){
         //72 px per inch

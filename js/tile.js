@@ -11,6 +11,26 @@ function Tile(xPos, yPos, inputs, outputs){
     if (xPos != null) this.render2D();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//interaction
+
+Tile.prototype.changeOutputState = function(indicator, indicatorText, num){
+    var currentState = this.outputs[num];
+    this.setIndicatorColor(!currentState, indicator, indicatorText);
+    this.outputs[num] = !currentState;
+};
+
+Tile.prototype.changeTileColor = function(rect){
+    this.color = !this.color;
+    this.setTileColor(this.color, rect);
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//render2D
+
 Tile.prototype.commonRender2D = function(rect){
     if (this.shape2D){
         this.shape2D.remove();
@@ -40,8 +60,7 @@ Tile.prototype.commonRender2D = function(rect){
     //add event handler for tile color change
     var self = this;
     rect.click(function(){
-        self.color = !self.color;
-        self.setTileColor(self.color, rect);
+        self.changeTileColor(rect);
     });
 
     this.shape2D = rect;
@@ -93,12 +112,6 @@ Tile.prototype.addInputsOutputs = function(state, num){
     }
 };
 
-Tile.prototype.changeOutputState = function(indicator, indicatorText, num){
-    var currentState = this.outputs[num];
-    this.setIndicatorColor(!currentState, indicator, indicatorText);
-    this.outputs[num] = !currentState;
-};
-
 Tile.prototype.setTileColor = function(state, el){
     if (state){
         el.attr({"fill":"#00f"});
@@ -120,5 +133,32 @@ Tile.prototype.setIndicatorColor = function(state, indicator, indicatorText){
 Tile.prototype.drawTriangle = function(vert1, vert2, vert3, shouldClose) {
     if (shouldClose) return tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1] + ' L ' + vert3[0] + ' ' + vert3[1] + ' Z');
     return tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1] + ' L ' + vert3[0] + ' ' + vert3[1])
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//draw paths for export
+
+Tile.prototype.drawToExporter = function(exporter, xOffset, notchWidth, chamferLength, tileWidth){
+    var scalingFactor = 72;
+    for (var i=0;i<4;i++){
+        var notch = this.drawNotch(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, false);
+        notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + xOffset + ', 0');
+    }
+
+    return scalingFactor*tileWidth;
+};
+
+Tile.prototype.drawNotch = function(width, exporter, notchWidth, chamferLength, state){
+    var path = 'M 0 0';//start at 0, 0
+    path += ' H ' + ((width-notchWidth)/2.0 - chamferLength);//move horizontally
+    path += ' L ' + (width-notchWidth)/2.0 + ' ' + (chamferLength);//move across chamfer
+    if (state) path += ' V ' + width/6;//short notch
+    else path += ' V ' + 2*width/6;//deep notch
+    path += ' H ' + (width+notchWidth)/2.0;//move horizontally
+    path += ' V ' + chamferLength;//move vertically
+    path += ' L ' + ((width+notchWidth)/2.0 + chamferLength) + ' ' + 0;//move across chamfer
+    path += ' H ' + width;//move horizontally
+    return exporter.path(path);
 };
 

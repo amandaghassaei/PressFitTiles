@@ -9,12 +9,14 @@ $(document).ready(function(){
     var chamferLength = 0.0;
     var notchWidth = 0.15;
     var tileWidth = 3.0;
+    tileSpace.overhangDim = 0.0;
 
     var notchWidthInput = $("#notchWidth");
     notchWidthInput.keyup(function(e){
         var val = parseFloat($(this).val());
         if (val){
             notchWidth = val;
+            tileSpace.overhangDim = 72*egdeSlider.slider("value")*((tileWidth-notchWidth)/2 - chamferLength)/100.0;
             tileSpace.renderParts();
         }
     });
@@ -25,20 +27,31 @@ $(document).ready(function(){
         var val = parseFloat($(this).val());
         if (val){
             tileWidth = val;
-            chamferLength = $("#chamfer").slider("value")*tileWidth/500.0;
+            chamferLength = $("#chamfer").slider("value")*(tileWidth/3-notchWidth)/200.0;
+            tileSpace.overhangDim = 72*egdeSlider.slider("value")*((tileWidth-notchWidth)/2 - chamferLength)/100.0;
             tileSpace.renderParts();
         }
     });
     tileWidthInput.val(tileWidth);
 
     $(".slider").slider();
+
     var chamferSlider = $("#chamfer");
     chamferSlider.on("slide", function(event, ui){
-        chamferLength = ui.value*tileWidth/500.0;
+        chamferLength = ui.value*(tileWidth-notchWidth)/600.0;
+        tileSpace.overhangDim = 72*egdeSlider.slider("value")*((tileWidth-notchWidth)/2 - chamferLength)/100.0;
         tileSpace.renderParts();
     });
     chamferSlider.slider('value',30);//set initial val
-    chamferLength = chamferSlider.slider("value")*tileWidth/500.0;
+    chamferLength = chamferSlider.slider("value")*(tileWidth/3-notchWidth)/200.0;
+
+    var egdeSlider = $("#extraEdge");
+    egdeSlider.on("slide", function(event, ui){
+        tileSpace.overhangDim = 72*ui.value*((tileWidth-notchWidth)/2 - chamferLength)/100.0;
+        tileSpace.renderParts();
+    });
+    egdeSlider.slider('value',80);//set initial val
+    tileSpace.overhangDim = 72*egdeSlider.slider("value")*((tileWidth-notchWidth)/2 - chamferLength)/100.0;
 
     $("#exportSvg").click(function(){
         tileSpace.renderParts();
@@ -47,9 +60,9 @@ $(document).ready(function(){
 
     tileSpace.renderParts = function(){
         exporter.clear();
-        //draw things to invisible paper
         var scalingFactor = 72.0;
-        if (tileWidth*scalingFactor > 185) scalingFactor = 185/tileWidth;
+        exporter.setViewBox(0, 0, scalingFactor*(5*(tileWidth+0.1)-0.1), scalingFactor*(2*(tileWidth+0.1)-0.1), false);
+        //draw things to invisible paper
         tileSpace.tiles[0].drawToExporter(exporter, [0, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
         tileSpace.tiles[1].drawToExporter(exporter, [0, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
         tileSpace.tiles[2].drawToExporter(exporter, [tileWidth+0.1, 0], notchWidth, chamferLength, tileWidth, scalingFactor);

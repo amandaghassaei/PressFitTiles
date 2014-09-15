@@ -26,7 +26,7 @@ CornerTile.prototype.drawSide = function(width, exporter, notchWidth, chamferLen
 };
 
 CornerTile.prototype.drawStraightEdge = function(width, exporter, notchWidth, side){
-    var offset = (width-notchWidth)/4;
+    var offset = tileSpace.overhangDim;
     var path;
     if (side) path = 'M 0 ' + offset;//start at 0, offset
     else path = 'M ' + offset + ' ' + offset;//start at 0, offset

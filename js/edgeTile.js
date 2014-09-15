@@ -60,7 +60,7 @@ EdgeTile.prototype.drawSide = function(width, exporter, notchWidth, chamferLengt
 };
 
 EdgeTile.prototype.drawStraightEdge = function(width, exporter, notchWidth){
-    var offset = (width-notchWidth)/4;
+    var offset = tileSpace.overhangDim;
     path = 'M 0 ' + offset;//start at 0, offset
     path += ' H ' + width;//move horizontally
     return exporter.path(path);

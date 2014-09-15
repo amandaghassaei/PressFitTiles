@@ -148,7 +148,8 @@ Tile.prototype.drawToExporter = function(exporter, offset, notchWidth, chamferLe
         var notch = this.drawSide(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state,  i);
         notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor);
     }
-    this.addArrow([offset[0]*scalingFactor + 3*scalingFactor*tileWidth/5, offset[1]*scalingFactor + 3*scalingFactor*tileWidth/5],[offset[0]*scalingFactor + scalingFactor*tileWidth/3, offset[1]*scalingFactor + scalingFactor*tileWidth/3], exporter, "red");
+    this.addArrow([offset[0]*scalingFactor + scalingFactor*tileWidth/2, offset[1]*scalingFactor + scalingFactor*tileWidth/2],
+        [offset[0]*scalingFactor + scalingFactor*tileWidth/3, offset[1]*scalingFactor + scalingFactor*tileWidth/3], exporter, "red");
 };
 
 Tile.prototype.drawSide = function(width, exporter, notchWidth, chamferLength, state){//override this
@@ -164,7 +165,7 @@ Tile.prototype.drawRegularNotch = function(width, exporter, notchWidth, chamferL
 };
 
 Tile.prototype.drawIncompleteSide = function(width, exporter, notchWidth, chamferLength, state, side){
-    var offset = (width-notchWidth)/4;
+    var offset = tileSpace.overhangDim;
     var path = '';
     if (side) path += 'M 0 0';//start at 0, 0
     else path += 'M ' + offset + ' 0';//start at offset, 0
@@ -177,8 +178,8 @@ Tile.prototype.drawIncompleteSide = function(width, exporter, notchWidth, chamfe
 
 Tile.prototype.sharedNotchPath = function(width, exporter, notchWidth, chamferLength, state){
     var path = ' L ' + (width-notchWidth)/2.0 + ' ' + (chamferLength);//move across chamfer
-    if (state) path += ' V ' + (width/6-notchWidth/2);//short notch
-    else path += ' V ' + (2*width/6-notchWidth/2);//deep notch
+    if (state) path += ' V ' + ((width-notchWidth)/6.0);//short notch
+    else path += ' V ' + ((width-notchWidth)/3.0);//deep notch
     path += ' H ' + (width+notchWidth)/2.0;//move horizontally
     path += ' V ' + chamferLength;//move vertically
     path += ' L ' + ((width+notchWidth)/2.0 + chamferLength) + ' ' + 0;//move across chamfer

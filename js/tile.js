@@ -139,28 +139,47 @@ Tile.prototype.drawTriangle = function(vert1, vert2, vert3, shouldClose) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //draw paths for export
 
-Tile.prototype.drawToExporter = function(exporter, xOffset, notchWidth, chamferLength, tileWidth){
-    var scalingFactor = 72;
+Tile.prototype.drawToExporter = function(exporter, offset, notchWidth, chamferLength, tileWidth, scalingFactor){
     for (var i=0;i<4;i++){
         var state;
         if (i<2) state = this.outputs[i];
         else state = !this.inputs[3-i];
-        var notch = this.drawNotch(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state);
-        notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + xOffset + ', 0');
+        var notch = this.drawSide(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state,  i);
+        notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor);
     }
-    return scalingFactor*tileWidth;
 };
 
-Tile.prototype.drawNotch = function(width, exporter, notchWidth, chamferLength, state){
+Tile.prototype.drawSide = function(width, exporter, notchWidth, chamferLength, state){//override this
+    return this.drawRegularNotch(width, exporter, notchWidth, chamferLength, state);
+};
+
+Tile.prototype.drawRegularNotch = function(width, exporter, notchWidth, chamferLength, state){
     var path = 'M 0 0';//start at 0, 0
     path += ' H ' + ((width-notchWidth)/2.0 - chamferLength);//move horizontally
-    path += ' L ' + (width-notchWidth)/2.0 + ' ' + (chamferLength);//move across chamfer
+    path += this.sharedNotchPath(width, exporter, notchWidth, chamferLength, state);
+    path += ' H ' + width;//move horizontally
+    return exporter.path(path);
+};
+
+Tile.prototype.drawIncompleteSide = function(width, exporter, notchWidth, chamferLength, state, side){
+    var offset = (width-notchWidth)/4;
+    var path = '';
+    if (side) path += 'M 0 0';//start at 0, 0
+    else path += 'M ' + offset + ' 0';//start at offset, 0
+    path += ' H ' + ((width-notchWidth)/2.0 - chamferLength);//move horizontally
+    path += this.sharedNotchPath(width, exporter, notchWidth, chamferLength, state);
+    if (side) path += ' H ' + (width-offset);//move horizontally
+    else path += ' H ' + width;//move horizontally
+    return exporter.path(path);
+};
+
+Tile.prototype.sharedNotchPath = function(width, exporter, notchWidth, chamferLength, state){
+    var path = ' L ' + (width-notchWidth)/2.0 + ' ' + (chamferLength);//move across chamfer
     if (state) path += ' V ' + (width/6-notchWidth/2);//short notch
     else path += ' V ' + (2*width/6-notchWidth/2);//deep notch
     path += ' H ' + (width+notchWidth)/2.0;//move horizontally
     path += ' V ' + chamferLength;//move vertically
     path += ' L ' + ((width+notchWidth)/2.0 + chamferLength) + ' ' + 0;//move across chamfer
-    path += ' H ' + width;//move horizontally
-    return exporter.path(path);
+    return path;
 };
 

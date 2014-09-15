@@ -34,6 +34,7 @@ $(document).ready(function(){
 
     tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 370);//interactive 2d designer
     tileSpace.tiles = draw2DTiles();
+    tileSpace.renderParts();
 
     function draw2DTiles(){
         var spacing = 32;

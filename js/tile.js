@@ -7,28 +7,32 @@ function Tile(xPos, yPos, inputs, outputs){
     this.outputs = outputs;
     this.color = true;
 
-    this.render2D();
+    if (xPos != null) this.render2D();
 }
 
-Tile.prototype.render2D = function(){
+Tile.prototype.commonRender2D = function(rect){
     if (this.shape2D){
         this.shape2D.remove();
         console.log("something is going wrong here");
     }
 
-    var rect = tileSpace.mainCanvas.rect(this.position[0], this.position[1], tileSpace.tileWidth2D, tileSpace.tileWidth2D);
     rect.attr({"stroke":"#000", "opacity":"0.6"});
     this.setTileColor(this.color, rect);
 
-    //states
-    this.stateIndicatorText = [];
+    //inputs/outputs
     for (var i=0;i<4;i++){
         var state;
         if (i<2) state = this.outputs[i];
         else state = this.inputs[i-2];
+        if (i == 2){
+            if (rect.getBBox()["height"] < tileSpace.tileWidth2D) continue;
+        } else if (i == 3){
+            if (rect.getBBox()["width"] < tileSpace.tileWidth2D) continue;
+        }
         this.addInputsOutputs(state, i);
     }
 
+    //add event handler for tile color change
     var self = this;
     rect.click(function(){
         self.color = !self.color;
@@ -38,13 +42,24 @@ Tile.prototype.render2D = function(){
     this.shape2D = rect;
 };
 
-Tile.prototype.addArrow = function(){
+Tile.prototype.render2D = function(){
+    var rect = tileSpace.mainCanvas.rect(this.position[0], this.position[1], tileSpace.tileWidth2D, tileSpace.tileWidth2D);
+    this.commonRender2D(rect);
 
+    //add arrow
+    this.addArrow([this.position[0]+2*tileSpace.tileWidth2D/3, this.position[1]+2*tileSpace.tileWidth2D/3],
+        [this.position[0]+tileSpace.tileWidth2D/3, this.position[1]+tileSpace.tileWidth2D/3]);
+};
+
+Tile.prototype.addArrow = function(vert1, vert2){
+    tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1]).attr({"stroke-width": 2});
+    tileSpace.mainCanvas.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + vert2[0] + ' ' + (vert2[1]+15)).attr({"stroke-width": 2});
+    tileSpace.mainCanvas.path('M ' + vert2[0] + ' ' + vert2[1] + 'L' + (vert2[0]+15) + ' ' + vert2[1]).attr({"stroke-width": 2});
 };
 
 Tile.prototype.addInputsOutputs = function(state, num){
 
-    var spacer = 40;
+    var spacer = 3*tileSpace.tileWidth2D/10;
     var indicator = this.drawTriangle([this.position[0]+spacer, this.position[1]],
         [this.position[0]+tileSpace.tileWidth2D/2 ,this.position[1]+tileSpace.tileWidth2D/5],
         [this.position[0]+tileSpace.tileWidth2D-spacer, this.position[1]]);
@@ -57,7 +72,7 @@ Tile.prototype.addInputsOutputs = function(state, num){
     if (state) text = "1";
 
     var indicatorText = tileSpace.mainCanvas.text(bBox['x']+bBox['width']/2,bBox['y']+bBox['height']/2, text).attr({'font-size':12});
-    this.set2DAppearanceForState(state, indicator, indicatorText);
+    this.setIndicatorColor(state, indicator, indicatorText);
 
 //    bind events to indicators
     var self = this;
@@ -70,7 +85,7 @@ Tile.prototype.addInputsOutputs = function(state, num){
 
 Tile.prototype.changeOutputState = function(indicator, indicatorText, num){
     var currentState = this.outputs[num];
-    this.set2DAppearanceForState(!currentState, indicator, indicatorText);
+    this.setIndicatorColor(!currentState, indicator, indicatorText);
     this.outputs[num] = !currentState;
 };
 
@@ -82,7 +97,7 @@ Tile.prototype.setTileColor = function(state, el){
     }
 };
 
-Tile.prototype.set2DAppearanceForState = function(state, indicator, indicatorText){
+Tile.prototype.setIndicatorColor = function(state, indicator, indicatorText){
     if (state){
         indicatorText.attr({"stroke":"#000", "text":"1"});
         indicator.attr({"fill":"#fff", "stroke":"#fff"});
@@ -94,9 +109,4 @@ Tile.prototype.set2DAppearanceForState = function(state, indicator, indicatorTex
 
 Tile.prototype.drawTriangle = function(vert1, vert2, vert3) {
     return tileSpace.mainCanvas.path('M '+vert1[0] + ' ' + vert1[1] + ' L ' + vert2[0] + ' ' + vert2[1] + ' L ' + vert3[0] + ' ' + vert3[1] + ' Z');
-};
-
-Tile.prototype.changeColor = function(color){
-    this.color = color;
-    this.shape2D.attr("fill", this.color);
 };

@@ -34,10 +34,20 @@ $(document).ready(function(){
 
     tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 500);//main canvas
 
+    var spacing = 45;
     tileSpace.tiles = [];
     for (var i=0;i<2;i++){
         for (var j=0;j<2;j++){
-            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+45), j*(tileSpace.tileWidth2D+45), [false, false], [false, true]))
+            tileSpace.tiles.push(new Tile(i*(tileSpace.tileWidth2D+spacing), j*(tileSpace.tileWidth2D+spacing), [true, false], [false, false]))
+        }
+    }
+
+    for (i=0;i<2;i++){
+        for (j=0;j<1;j++){
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [true], [false, false], true))
+        }
+        for (j=1;j<2;j++){
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [true], [false, false], false))
         }
     }
 

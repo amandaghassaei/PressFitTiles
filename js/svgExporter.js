@@ -6,10 +6,9 @@ $(document).ready(function(){
     var exporter = Raphael(document.getElementById("svgExporter"), 900, 380);//exporter (set to display:none)
 
     //laser/material settings (in inches)
-    var chamferLength = 0.1;
+    var chamferLength = 0.0;
     var notchWidth = 0.15;
     var tileWidth = 3.0;
-
 
     var notchWidthInput = $("#notchWidth");
     notchWidthInput.keyup(function(e){
@@ -26,10 +25,20 @@ $(document).ready(function(){
         var val = parseFloat($(this).val());
         if (val){
             tileWidth = val;
+            chamferLength = $("#chamfer").slider("value")*tileWidth/500.0;
             tileSpace.renderParts();
         }
     });
     tileWidthInput.val(tileWidth);
+
+    $(".slider").slider();
+    var chamferSlider = $("#chamfer");
+    chamferSlider.on("slide", function(event, ui){
+        chamferLength = ui.value*tileWidth/500.0;
+        tileSpace.renderParts();
+    });
+    chamferSlider.slider('value',30);//set initial val
+    chamferLength = chamferSlider.slider("value")*tileWidth/500.0;
 
     $("#exportSvg").click(function(){
         tileSpace.renderParts();

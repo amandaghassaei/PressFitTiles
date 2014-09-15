@@ -142,10 +142,12 @@ Tile.prototype.drawTriangle = function(vert1, vert2, vert3, shouldClose) {
 Tile.prototype.drawToExporter = function(exporter, xOffset, notchWidth, chamferLength, tileWidth){
     var scalingFactor = 72;
     for (var i=0;i<4;i++){
-        var notch = this.drawNotch(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, false);
+        var state;
+        if (i<2) state = this.outputs[i];
+        else state = !this.inputs[3-i];
+        var notch = this.drawNotch(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state);
         notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + xOffset + ', 0');
     }
-
     return scalingFactor*tileWidth;
 };
 
@@ -153,8 +155,8 @@ Tile.prototype.drawNotch = function(width, exporter, notchWidth, chamferLength, 
     var path = 'M 0 0';//start at 0, 0
     path += ' H ' + ((width-notchWidth)/2.0 - chamferLength);//move horizontally
     path += ' L ' + (width-notchWidth)/2.0 + ' ' + (chamferLength);//move across chamfer
-    if (state) path += ' V ' + width/6;//short notch
-    else path += ' V ' + 2*width/6;//deep notch
+    if (state) path += ' V ' + (width/6-notchWidth/2);//short notch
+    else path += ' V ' + (2*width/6-notchWidth/2);//deep notch
     path += ' H ' + (width+notchWidth)/2.0;//move horizontally
     path += ' V ' + chamferLength;//move vertically
     path += ' L ' + ((width+notchWidth)/2.0 + chamferLength) + ' ' + 0;//move across chamfer

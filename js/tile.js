@@ -6,6 +6,7 @@ function Tile(xPos, yPos, inputs, outputs){
     this.inputs = inputs;
     this.outputs = outputs;
     this.color = true;
+    if (outputs && outputs[0]) this.color = false;//default
 
     if (xPos != null) this.render2D();
 }

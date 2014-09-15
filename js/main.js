@@ -32,9 +32,9 @@ $(document).ready(function(){
     render();
 
 
-    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 500);//main canvas
+    tileSpace.mainCanvas = Raphael(document.getElementById("2dDesigner"), 900, 350);//main canvas
 
-    var spacing = 35;
+    var spacing = 32;
     tileSpace.tiles = [];
     for (var i=0;i<2;i++){
         var input1 = false;
@@ -50,14 +50,14 @@ $(document).ready(function(){
         input1 = false;
         if (i>0) input1 = true;
         for (j=0;j<1;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+43*tileSpace.tileWidth2D/20, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], true))
         }
         for (j=1;j<2;j++){
-            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing), [input1], [input1^1, input1&1], false))
+            tileSpace.tiles.push(new EdgeTile(i*(tileSpace.tileWidth2D+spacing)+3*spacing+2*tileSpace.tileWidth2D, j*(tileSpace.tileWidth2D+spacing)+3*tileSpace.tileWidth2D/10, [input1], [input1^1, input1&1], false))
         }
     }
 
-    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*5, 0, [true, true]));
+    tileSpace.tiles.push(new CornerTile(tileSpace.tileWidth2D*4+spacing*6, 13*tileSpace.tileWidth2D/10+spacing, [true, true]));
 
     tileSpace.downloadSVG = function(){
         //72 px per inch

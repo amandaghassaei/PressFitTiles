@@ -20,13 +20,18 @@ $(document).ready(function(){
         tileSpace.scene = new THREE.Scene();
         tileSpace.camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);
 
+        tileSpace.scene.fog = new THREE.Fog(0xffffff, 10, 60);
+        tileSpace.scene.fog.color.setHSL( 0.51, 0.6, 0.6 );
+
         tileSpace.renderer = new THREE.WebGLRenderer();
         tileSpace.renderer.setSize(width, height);
+        tileSpace.renderer.setClearColor(0xeeeeee, 1);
         $("#3dRenderer").append(tileSpace.renderer.domElement);
 
         tileSpace.render3DStructure();
 
-        tileSpace.camera.position.z = 15;
+        tileSpace.camera.position.z = 10;
+        tileSpace.camera.position.x = 10;
 
         var controls = new THREE.TrackballControls(tileSpace.camera);
 
@@ -34,7 +39,7 @@ $(document).ready(function(){
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
 
-        controls.noZoom = false;
+        controls.noZoom = true;
         controls.noPan = false;
 
         controls.staticMoving = true;

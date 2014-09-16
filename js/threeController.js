@@ -68,7 +68,7 @@ tileSpace.render3DStructure = function(){
 
 var drawCorner3D = function(z){
     var geometry = new THREE.BoxGeometry(tileGridDim/2-tileSpacing,tileGridDim/2-tileSpacing,0.05);
-    var material = new THREE.MeshBasicMaterial({color: 0x00ff00, transparent:true, opacity:tileOpacity});
+    var material = new THREE.MeshBasicMaterial({color: getRandomColor(), transparent:true, opacity:tileOpacity});
     var cube = new THREE.Mesh(geometry, material);
     cube.position.set((tileGridDim/2-tileSpacing)/2, (tileGridDim/2-tileSpacing)/2, tileGridDim*z/2);
     tileSpace.scene.add(cube);
@@ -101,7 +101,7 @@ var drawEdge3D = function(x, y, z, normal, vertical){
             }
         }
     }
-    var material = new THREE.MeshBasicMaterial({color: 0xff0000, transparent:true, opacity:tileOpacity});
+    var material = new THREE.MeshBasicMaterial({color: getRandomColor(), transparent:true, opacity:tileOpacity});
     var cube = new THREE.Mesh(geometry, material);
     if (vertical){
         if (normal == 'x'){
@@ -142,7 +142,7 @@ var drawTile3D = function(x, y, z, normal){
     } else {
         geometry = new THREE.BoxGeometry(0.05, tileGridDim-2*tileSpacing, tileGridDim-2*tileSpacing);
     }
-    var material = new THREE.MeshBasicMaterial({color: 0x0000ff, transparent:true, opacity:tileOpacity});
+    var material = new THREE.MeshBasicMaterial({color: getRandomColor(), transparent:true, opacity:tileOpacity});
     var cube = new THREE.Mesh(geometry, material);
     if (normal == 'z'){
         if (z%2 == 0) {
@@ -157,3 +157,8 @@ var drawTile3D = function(x, y, z, normal){
     }
     tileSpace.scene.add(cube);
 };
+
+var getRandomColor = function(){
+    var color = "0x" + parseInt(255*Math.random()).toString(16) + parseInt(255*Math.random()).toString(16) + parseInt(255*Math.random()).toString(16);
+    return parseInt(color);
+}

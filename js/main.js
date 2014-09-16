@@ -33,13 +33,13 @@ $(document).ready(function(){
         tileSpace.camera.position.z = 10;
         tileSpace.camera.position.x = 10;
 
-        var controls = new THREE.TrackballControls(tileSpace.camera);
+        var controls = new THREE.TrackballControls(tileSpace.camera, tileSpace.renderer.domElement);
 
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
 
-        controls.noZoom = true;
+        controls.noZoom = false;
         controls.noPan = false;
 
         controls.staticMoving = true;

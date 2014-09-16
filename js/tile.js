@@ -148,8 +148,9 @@ Tile.prototype.drawToExporter = function(exporter, offset, notchWidth, chamferLe
         var notch = this.drawSide(scalingFactor*tileWidth, exporter, scalingFactor*notchWidth, scalingFactor*chamferLength, state,  i);
         notch.transform('r ' + -90*i + ', ' + scalingFactor*tileWidth/2.0 + ', ' + scalingFactor*tileWidth/2.0 + ' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor);
     }
-    this.addArrow([offset[0]*scalingFactor + scalingFactor*tileWidth/2, offset[1]*scalingFactor + scalingFactor*tileWidth/2],
-        [offset[0]*scalingFactor + scalingFactor*tileWidth/3, offset[1]*scalingFactor + scalingFactor*tileWidth/3], exporter, "red");
+    var font = tileWidth*4;
+    exporter.text(scalingFactor*tileWidth/3, scalingFactor*tileWidth/6, "LSB").transform(' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor).attr({"stroke":"red", "font-size":font});
+    exporter.text(scalingFactor*tileWidth/6, scalingFactor*tileWidth/3, "MSB").transform(' T ' + offset[0]*scalingFactor + ', ' + offset[1]*scalingFactor).attr({"stroke":"red", "font-size":font});
 };
 
 Tile.prototype.drawSide = function(width, exporter, notchWidth, chamferLength, state){//override this

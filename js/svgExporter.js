@@ -63,15 +63,15 @@ $(document).ready(function(){
         var scalingFactor = 72.0;
         exporter.setViewBox(0, 0, scalingFactor*(5*(tileWidth+0.1)-0.1), scalingFactor*(2*(tileWidth+0.1)-0.1), false);
         //draw things to invisible paper
-        tileSpace.tiles[0].drawToExporter(exporter, [0, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[1].drawToExporter(exporter, [0, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[2].drawToExporter(exporter, [tileWidth+0.1, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[3].drawToExporter(exporter, [tileWidth+0.1, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[4].drawToExporter(exporter, [2*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[5].drawToExporter(exporter, [2*(tileWidth+0.1), tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[6].drawToExporter(exporter, [3*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[7].drawToExporter(exporter, [3*(tileWidth+0.1), tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
-        tileSpace.tiles[8].drawToExporter(exporter, [4*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["tile1"].drawToExporter(exporter, [0, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["tile2"].drawToExporter(exporter, [0, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["tile3"].drawToExporter(exporter, [tileWidth+0.1, 0], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["tile4"].drawToExporter(exporter, [tileWidth+0.1, tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["edgeTile1"].drawToExporter(exporter, [2*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["edgeTile2"].drawToExporter(exporter, [2*(tileWidth+0.1), tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["edgeTile3"].drawToExporter(exporter, [3*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["edgeTile4"].drawToExporter(exporter, [3*(tileWidth+0.1), tileWidth+0.1], notchWidth, chamferLength, tileWidth, scalingFactor);
+        tileSpace.tiles["corner"].drawToExporter(exporter, [4*(tileWidth+0.1), 0], notchWidth, chamferLength, tileWidth, scalingFactor);
     };
 
     var downloadSVG = function(){//working in chrome, not sure about others

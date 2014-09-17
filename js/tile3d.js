@@ -89,6 +89,7 @@ Tile3d.prototype.makeGeometry = function(x, y, z){
                 }
             } else {
                 this.drawTile3D(x, y, z, 'z');
+                console.log(x);
                 this.outputs = this.getOutputsForType(this.getTileForInputs(currentLayer[x-1][y][0], currentLayer[x][y-1][1]));
             }
         }

@@ -30,7 +30,7 @@ $(document).ready(function(){
 
         tileSpace.render3DStructure();
 
-        tileSpace.camera.position.z = 10;
+        tileSpace.camera.position.y = 10;
         tileSpace.camera.position.x = 10;
 
         var controls = new THREE.TrackballControls(tileSpace.camera, tileSpace.renderer.domElement);

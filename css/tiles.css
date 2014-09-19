@@ -5,10 +5,38 @@ body {
     font-weight:300;
 }
 
+img {
+    max-width : 750px;
+    display:block;
+    margin:auto;
+    padding-bottom: 30px;
+}
+
+iframe {
+    max-width : 750px;
+    display:block;
+    margin:auto;
+    padding-bottom: 30px;
+}
+
+canvas {
+    padding-bottom: 30px;
+}
+
+p {
+    padding: 0 40px;
+}
+
+b {
+    font-weight: 900;
+}
+    
+
 #mainWrapper{
     margin-left: auto;
     margin-right: auto;
     width: 900px;
+    padding: 100px 0px;
 }
 
 #3dRenderer {
